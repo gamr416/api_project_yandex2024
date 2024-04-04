@@ -45,6 +45,12 @@ def logout():
     logout_user()
     return redirect("/")
 
+@app.route('/open_user')
+@login_required
+def open_user():
+    pass
+
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def reqister():
