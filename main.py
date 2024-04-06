@@ -38,6 +38,10 @@ def login():
                                form=form)
     return render_template('login.html', title='Авторизация', form=form)
 
+@app.route('/quoestion/<int:id>')
+def open_question():
+    return render_template('question.html')
+
 
 @app.route('/logout')
 @login_required
@@ -45,10 +49,15 @@ def logout():
     logout_user()
     return redirect("/")
 
-@app.route('/open_user')
+
+@app.route('/user')
 @login_required
 def open_user():
-    pass
+    return render_template('user_info.html')
+
+# @app.route('/ask')
+# @login_required
+# def open_user():
 
 
 
@@ -77,8 +86,7 @@ def reqister():
     return render_template('register.html', title='Регистрация', form=form)
 
 
-@app.route('/news',  methods=['GET', 'POST'])
-@login_required
+@app.route('/ask',  methods=['GET', 'POST'])
 def add_news():
     form = NewsForm()
     if form.validate_on_submit():
@@ -95,7 +103,7 @@ def add_news():
                            form=form)
 
 
-@app.route('/news/<int:id>', methods=['GET', 'POST'])
+@app.route('/ask/<int:id>', methods=['GET', 'POST'])
 @login_required
 def edit_news(id):
     form = NewsForm()
