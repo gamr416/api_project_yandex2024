@@ -12,12 +12,12 @@
 
 <body>
     <header>
-        <nav class="navbar navbar-light bg-light">
+        <nav class="navbar navbar-light bg-light" background="black">
             <a class="navbar-brand" href="/"><img src="static/img/logo.png"></a>
+            <a class="btn btn-primary" href="/ask">Спросить</a>
             {% if current_user.is_authenticated %}
             <a class="navbar-brand" href="/user">{{ current_user.name }}</a>
             {% else %}
-            <a class="ask_but" href="/ask">Спросить</a>
             <p>
                 <a class="btn btn-primary " href="/register">Зарегистрироваться</a>
                 <a class="btn btn-success" href="/login">Войти</a>
