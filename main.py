@@ -38,6 +38,10 @@ def login():
                                form=form)
     return render_template('login.html', title='Авторизация', form=form)
 
+@app.route('/quoestion/<int:id>')
+def open_question():
+    return render_template('question.html')
+
 
 @app.route('/logout')
 @login_required
