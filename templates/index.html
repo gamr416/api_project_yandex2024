@@ -13,7 +13,7 @@
             </div>
             {% if current_user.is_authenticated and current_user == item.user %}
                 <div>
-                    <a href="/news/{{ item.id }}" class="btn btn-warning">
+                    <a href="/ask/{{ item.id }}" class="btn btn-warning">
                         Изменить
                     </a>
                     <a href="/news_delete/{{ item.id }}" class="btn btn-danger">
@@ -26,7 +26,7 @@
     {% endfor %}
     <div>
         {% if current_user.is_authenticated %}
-            <a href="news" class="btn btn-secondary">Добавить новость</a>
+            <a href="ask" class="btn btn-secondary">Добавить новость</a>
         {% endif %}
     </div>
 {% endblock %}

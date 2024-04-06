@@ -45,10 +45,14 @@ def logout():
     logout_user()
     return redirect("/")
 
-@app.route('/open_user')
+@app.route('/user')
 @login_required
 def open_user():
-    pass
+    return render_template('user_info.html')
+
+# @app.route('/ask')
+# @login_required
+# def open_user():
 
 
 
@@ -77,8 +81,7 @@ def reqister():
     return render_template('register.html', title='Регистрация', form=form)
 
 
-@app.route('/news',  methods=['GET', 'POST'])
-@login_required
+@app.route('/ask',  methods=['GET', 'POST'])
 def add_news():
     form = NewsForm()
     if form.validate_on_submit():
