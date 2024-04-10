@@ -4,7 +4,8 @@
     <h1>{{ current_user.name }}</h1>
     <h2>{{ current_user.about }}</h2>
     <a class="navbar-brand" href="/logout">Выйти</a>
-    <input type="file" name=file>
+        <form action = "/success" method = "post" enctype="multipart/form-data">
+    <input type="file" name='file'/>
     <input type=submit value=Upload>
 
 {% endblock %}

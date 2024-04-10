@@ -104,7 +104,13 @@ def open_user():
 # @login_required
 # def open_user():
 
-
+@app.route('/success', methods = ['POST'])
+def success():
+    if request.method == 'POST':
+        f = request.files['file']
+        f.save(f'uploaded_files/{f.filename}')
+        return render_template('user_info.html')
+        # return render_template("Acknowledgement.html", name = f.filename)
 
 @app.route('/register', methods=['GET', 'POST'])
 def reqister():
