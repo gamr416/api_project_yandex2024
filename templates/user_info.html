@@ -3,11 +3,11 @@
 {% block content %}
     <h1><img src={{current_user.avatar}} width="150" height="150"></h1>
     <h3>Поменять аватар</h3>
-    <input type="file" name='Поменять аватар'/>
-    <input type=submit value=Upload>
+    <form action = "/success" method = "post" enctype="multipart/form-data">
+        <input type="file" name="file"/>
+        <input type=submit value=Upload>
     <h1>{{ current_user.name }}</h1>
     <h2>{{ current_user.about }}</h2>
     <a class="navbar-brand" href="/logout">Выйти</a>
-        <form action = "/success" method = "post" enctype="multipart/form-data">
 
 {% endblock %}

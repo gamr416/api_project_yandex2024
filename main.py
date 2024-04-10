@@ -83,7 +83,7 @@ def logout():
 @app.route('/user')
 @login_required
 def open_user():
-    a=12344
+    print(current_user.avatar)
     if request.method == 'POST':
         # check if the post request has the file part
         if 'file' not in request.files:
@@ -101,18 +101,21 @@ def open_user():
             return redirect(url_for('download_file', name=filename))
     return render_template('user_info.html')
 
-# @app.route('/ask')
-# @login_required
-# def open_user():
 
-@app.route('/success', methods = ['POST'])
+@app.route('/success', methods=['POST'])
 def success():
-    print(current_user)
     if request.method == 'POST':
         f = request.files['file']
-        f.save(f'uploaded_files/{f.filename}')
+        f.filename = f"avatar_{current_user.id}.png"
+        avatar = f'static/uploaded_files/{f.filename}'
+        f.save(avatar)
+        con = sqlite3.connect('db/blogs.db')
+        cur = con.cursor()
+        cur.execute(f'''UPDATE users SET avatar = "{avatar}" WHERE id = "{current_user.id}"''')
+        con.commit()
+        cur.close()
         return render_template('user_info.html')
-        # return render_template("Acknowledgement.html", name = f.filename)
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def reqister():
@@ -138,8 +141,6 @@ def reqister():
         avatar = "static/img/no_image.png"
         con = sqlite3.connect('db/blogs.db')
         cur = con.cursor()
-        print(user.id)
-        print(avatar)
         cur.execute(f'''UPDATE users SET avatar = "{avatar}" WHERE id = "{user.id}"''')
         con.commit()
         cur.close()
