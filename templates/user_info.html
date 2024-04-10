@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
+    <h1>{{ current_user.avatar}}</h1>
     <h1>{{ current_user.name }}</h1>
     <h2>{{ current_user.about }}</h2>
     <a class="navbar-brand" href="/logout">Выйти</a>
