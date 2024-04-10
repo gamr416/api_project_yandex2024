@@ -8,7 +8,6 @@ from werkzeug.utils import secure_filename
 import sqlite3
 import os
 
-
 from data.users import User
 from data.news import News
 
