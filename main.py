@@ -106,6 +106,7 @@ def open_user():
 
 @app.route('/success', methods = ['POST'])
 def success():
+    print(current_user)
     if request.method == 'POST':
         f = request.files['file']
         f.save(f'uploaded_files/{f.filename}')
