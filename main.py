@@ -1,11 +1,11 @@
 from flask import Flask
-from flask import render_template, redirect, request, abort
+from flask import render_template, redirect, request, abort, flash, url_for
 from data import db_session
 from forms.user import RegisterForm, LoginForm
 from forms.news import NewsForm
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
-
-import datetime
+from werkzeug.utils import secure_filename
+import os
 
 
 from data.users import User
@@ -14,9 +14,16 @@ from data.news import News
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
+UPLOAD_FOLDER = '/uploaded_images'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 login_manager = LoginManager()
 login_manager.init_app(app)
 
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -38,9 +45,32 @@ def login():
                                form=form)
     return render_template('login.html', title='Авторизация', form=form)
 
-@app.route('/quoestion/<int:id>')
-def open_question():
-    return render_template('question.html')
+@app.route('/question/<int:id>', methods=['GET', 'POST'])
+def open_question(id):
+    form = NewsForm()
+    if request.method == "GET":
+        db_sess = db_session.create_session()
+        news = db_sess.query(News).filter(News.id == id
+                                          ).first()
+        if news:
+            form.title.data = news.title
+            form.content.data = news.content
+            form.is_private.data = news.is_private
+        else:
+            abort(404)
+    if form.validate_on_submit():
+        db_sess = db_session.create_session()
+        news = db_sess.query(News).filter(News.id == id
+                                          ).first()
+        if news:
+            news.title = form.title.data
+            news.content = form.content.data
+            news.is_private = form.is_private.data
+            db_sess.commit()
+            return redirect('/')
+        else:
+            abort(404)
+    return render_template('question.html',title=f'Мыло {form.title.data}', form=form)
 
 
 @app.route('/logout')
@@ -53,13 +83,35 @@ def logout():
 @app.route('/user')
 @login_required
 def open_user():
+    if request.method == 'POST':
+        # check if the post request has the file part
+        if 'file' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+        file = request.files['file']
+        # If the user does not select a file, the browser submits an
+        # empty file without a filename.
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            return redirect(url_for('download_file', name=filename))
     return render_template('user_info.html')
 
 # @app.route('/ask')
 # @login_required
 # def open_user():
 
-
+@app.route('/success', methods = ['POST'])
+def success():
+    print(current_user)
+    if request.method == 'POST':
+        f = request.files['file']
+        f.save(f'uploaded_files/{f.filename}')
+        return render_template('user_info.html')
+        # return render_template("Acknowledgement.html", name = f.filename)
 
 @app.route('/register', methods=['GET', 'POST'])
 def reqister():
