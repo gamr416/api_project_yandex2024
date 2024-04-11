@@ -5,9 +5,8 @@ from forms.user import RegisterForm, LoginForm
 from forms.news import NewsForm
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from werkzeug.utils import secure_filename
+import sqlite3
 import os
-
-
 from data.users import User
 from data.news import News
 
@@ -83,6 +82,7 @@ def logout():
 @app.route('/user')
 @login_required
 def open_user():
+    print(current_user.avatar)
     if request.method == 'POST':
         # check if the post request has the file part
         if 'file' not in request.files:
@@ -100,18 +100,21 @@ def open_user():
             return redirect(url_for('download_file', name=filename))
     return render_template('user_info.html')
 
-# @app.route('/ask')
-# @login_required
-# def open_user():
 
-@app.route('/success', methods = ['POST'])
+@app.route('/success', methods=['POST'])
 def success():
-    print(current_user)
     if request.method == 'POST':
         f = request.files['file']
-        f.save(f'uploaded_files/{f.filename}')
+        f.filename = f"avatar_{current_user.id}.png"
+        avatar = f'static/uploaded_files/{f.filename}'
+        f.save(avatar)
+        con = sqlite3.connect('db/blogs.db')
+        cur = con.cursor()
+        cur.execute(f'''UPDATE users SET avatar = "{avatar}" WHERE id = "{current_user.id}"''')
+        con.commit()
+        cur.close()
         return render_template('user_info.html')
-        # return render_template("Acknowledgement.html", name = f.filename)
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def reqister():
@@ -134,6 +137,12 @@ def reqister():
         user.set_password(form.password.data)
         db_sess.add(user)
         db_sess.commit()
+        avatar = "static/img/no_image.png"
+        con = sqlite3.connect('db/blogs.db')
+        cur = con.cursor()
+        cur.execute(f'''UPDATE users SET avatar = "{avatar}" WHERE id = "{user.id}"''')
+        con.commit()
+        cur.close()
         return redirect('/login')
     return render_template('register.html', title='Регистрация', form=form)
 
