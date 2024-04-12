@@ -82,7 +82,6 @@ def logout():
 @app.route('/user')
 @login_required
 def open_user():
-    print(current_user.avatar)
     if request.method == 'POST':
         # check if the post request has the file part
         if 'file' not in request.files:
