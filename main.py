@@ -106,7 +106,7 @@ def success():
     if request.method == 'POST':
         f = request.files['file']
         f.filename = f"avatar_{current_user.id}.png"
-        avatar = f'static/uploaded_files/{f.filename}'
+        avatar = f'static/img/uploaded_files/{f.filename}'
         f.save(avatar)
         con = sqlite3.connect('db/blogs.db')
         cur = con.cursor()
