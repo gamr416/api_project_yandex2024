@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1><img src={{current_user.avatar}} width="150" height="150"></h1>
-    <h3>Поменять аватар</h3>
     <form action = "/success" method = "post" enctype="multipart/form-data">
-<!--        <input type="file" name="file"/>-->
-        <label><input type="file" name="file" style="visibility:hidden;"><img src={{current_user.avatar}} width="150" height="150"></label>
-        <input type=submit value=Upload>
+        <label for="file-upload" class="custom-file-upload">
+          <img src={{current_user.avatar}} width="150" height="150">
+        </label>
+        <input type="file" accept="image/png, image/gif, image/jpeg" id="file-upload" onchange="this.form.submit()" name="file" value=Upload style="visibility:hidden;">
+    </form>
     <h1>{{ current_user.name }}</h1>
     <h2>{{ current_user.about }}</h2>
     <a class="navbar-brand" href="/logout">Выйти</a>

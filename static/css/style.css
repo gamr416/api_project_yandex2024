@@ -61,3 +61,20 @@ h1 {
 file-upload {
     display: none;
   }
+
+.container {
+
+
+width: 500px;
+
+
+height: 500px;
+
+
+background-image: url('path-to-background-image');
+
+
+background-blend-mode: multiply;
+
+
+}
