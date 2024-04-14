@@ -3,7 +3,10 @@
 {% block content %}
     <form action = "/success" method = "post" enctype="multipart/form-data">
         <label for="file-upload" class="custom-file-upload">
-          <img src={{current_user.avatar}} width="150" height="150">
+            <div class="animate2">
+                <img src={{current_user.avatar}} class="second" width="150" height="150">
+                <img src="static/img/add_image.png" class="first" width="150" height="150">
+            </div>
         </label>
         <input type="file" accept="image/png, image/gif, image/jpeg" id="file-upload" onchange="this.form.submit()" name="file" value=Upload style="visibility:hidden;">
     </form>
