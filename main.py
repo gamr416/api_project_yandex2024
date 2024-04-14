@@ -46,31 +46,30 @@ def login():
 
 @app.route('/question/<int:id>', methods=['GET', 'POST'])
 def open_question(id):
-    # form = NewsForm()
-    # if request.method == "GET":
-    #     db_sess = db_session.create_session()
-    #     news = db_sess.query(News).filter(News.id == id
-    #                                       ).first()
-    #     if news:
-    #         form.title.data = news.title
-    #         form.content.data = news.content
-    #         form.is_private.data = news.is_private
-    #     else:
-    #         abort(404)
-    # if form.validate_on_submit():
-    #     db_sess = db_session.create_session()
-    #     news = db_sess.query(News).filter(News.id == id
-    #                                       ).first()
-    #     if news:
-    #         news.title = form.title.data
-    #         news.content = form.content.data
-    #         news.is_private = form.is_private.data
-    #         db_sess.commit()
-    #         return redirect('/')
-    #     else:
-    #         abort(404)
-    # return render_template('question.html',title=f'Мыло {form.title.data}', form=form)
-    return render_template('question.html')
+    form = NewsForm()
+    if request.method == "GET":
+        db_sess = db_session.create_session()
+        news = db_sess.query(News).filter(News.id == id
+                                          ).first()
+        if news:
+            form.title.data = news.title
+            form.content.data = news.content
+            form.is_private.data = news.is_private
+        else:
+            abort(404)
+    if form.validate_on_submit():
+        db_sess = db_session.create_session()
+        news = db_sess.query(News).filter(News.id == id
+                                          ).first()
+        if news:
+            news.title = form.title.data
+            news.content = form.content.data
+            news.is_private = form.is_private.data
+            db_sess.commit()
+            return redirect('/')
+        else:
+            abort(404)
+    return render_template('question.html',title=f'Мыло {form.title.data}', form=form)
 
 
 @app.route('/logout')
