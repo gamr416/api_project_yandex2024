@@ -62,19 +62,49 @@ file-upload {
     display: none;
   }
 
-.container {
 
+.animate2{
 
-width: 500px;
+  position:relative;
 
+  margin:0 auto;/* устанваливаем блок div по центру страницы*/
 
-height: 500px;
+  width:150px; /* Ширина */
 
+  height: 150px;  /* Высота */
 
-background-image: url('path-to-background-image');
+}
 
+.animate2 img {
 
-background-blend-mode: multiply;
+  position:absolute; /* абсолютное позиционирование*/
 
+  left: 0; /* выравниваем картинки по левому верхнему углу div-а*/
+
+  top: 0; /* выравниваем картинки по левому верхнему углу div-а */
+
+}
+
+.animate2 img.first { /* первая картинка полностью прозрачная */
+
+  opacity:0;
+
+  filter:alpha (opacity=0);
+
+}
+
+.animate2:hover img.first { /* при наведении курсора первая картинка становится не прозрачной */
+
+  opacity:0.7;
+
+  filter:alpha (opacity=70);
+
+}
+
+.animate2:hover img.second, .animate2 img.second:hover { /* а вторая при наведении курсора становится прозрачной */
+
+  opacity:1;
+
+  filter:alpha (opacity=100);
 
 }
