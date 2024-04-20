@@ -47,6 +47,9 @@ def login():
 @app.route('/question/<int:id>', methods=['GET', 'POST'])
 def open_question(id):
     form = NewsForm()
+    if request.method == 'POST':
+        # check if the post request has the file part
+        answer = request.files['answer']
     if request.method == "GET":
         db_sess = db_session.create_session()
         news = db_sess.query(News).filter(News.id == id
@@ -69,7 +72,7 @@ def open_question(id):
             return redirect('/')
         else:
             abort(404)
-    return render_template('question.html',title=f'Мыло {form.title.data}', form=form)
+    return render_template('question.html', title=f'Мыло {form.title.data}', form=form)
 
 
 @app.route('/logout')
@@ -112,7 +115,7 @@ def success():
         cur.execute(f'''UPDATE users SET avatar = "{avatar}" WHERE id = "{current_user.id}"''')
         con.commit()
         cur.close()
-        return redirect('/user')
+        return render_template('user_info.html')
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -217,7 +220,7 @@ def index():
     db_sess = db_session.create_session()
     if current_user.is_authenticated:
         news = db_sess.query(News).filter(
-            (News.user != current_user) & (News.is_private != True))
+            (News.user == current_user) | (News.is_private != True))
     else:
         news = db_sess.query(News).filter(News.is_private != True)
     return render_template("index.html", news=news)
