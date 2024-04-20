@@ -3,8 +3,13 @@
 {% block content %}
     <h1>Все вопросы с сайта</h1>
     <ul>
-        {% for user in users %}
-        <li>{{ user.name}} - {{user.email}}</li>
+        {% for new in news %}
+        <div class="col-md6 border rounded" style="background-color: #f8f9fa; margin-top: 20px;">
+            <h2>{{new.title}}</h2>
+            <p><b>Дата: {{new.created_date.date() }}</b></p>
+            <p>{{ new.content}}</p>
+            <button>Добавить ответ</button>
+        </div>
         {% endfor %}
     </ul>
 

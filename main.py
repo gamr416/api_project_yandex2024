@@ -31,11 +31,11 @@ def load_user(user_id):
 
 @app.route('/show_questions', methods=['GET', 'POST'])
 def show():
-    db_sess = db_session.create_session()
-    user = db_sess.query(User).all()
-    if len(user) == 0:
-        print(234567654)
-    return render_template('all_questions.html', users=user)
+    """db_sess = db_session.create_session()
+    user = db_sess.query(User).all()"""
+    db_sess2 = db_session.create_session()
+    news = db_sess2.query(News).order_by(News.created_date).all()
+    return render_template('all_questions.html', news=news)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
