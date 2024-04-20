@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Ваш вопрос</h1>
-    <form action="" method="post">
+    <form action="" method="post" style="background-color: #f8f9fa; margin-top: 20px;">
+        <h1 style="margin-left: 10px; margin-right: 10px">Ваш вопрос</h1>
         {{ form.hidden_tag() }}
-        <p>
+        <p style="margin-left: 10px; margin-right: 10px">
             {{ form.title.label }}<br>
             {{ form.title(class="form-control") }}<br>
             {% for error in form.title.errors %}
@@ -13,7 +13,7 @@
                 </p>
             {% endfor %}
         </p>
-        <p>
+        <p style="margin-left: 10px; margin-right: 10px">
             {{ form.content.label }}<br>
             {{ form.content(class="form-control") }}<br>
             {% for error in form.content.errors %}
@@ -22,8 +22,8 @@
                 </p>
             {% endfor %}
         </p>
-        <p>{{ form.is_private() }} {{ form.is_private.label }}</p>
-        <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+        <p style="margin-left: 10px; margin-right: 10px">{{ form.is_private() }} {{ form.is_private.label }}</p>
+        <p style="margin-left: 10px; margin-right: 10px">{{ form.submit(type="submit", class="btn btn-primary", style="margin-bottom: 10px;") }}</p>
         {{message}}
     </form>
 {% endblock %}

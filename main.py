@@ -136,7 +136,7 @@ def reqister():
         user.set_password(form.password.data)
         db_sess.add(user)
         db_sess.commit()
-        avatar = "static/img/no_image.png"
+        avatar = "static/img/no_image_1.png"
         con = sqlite3.connect('db/blogs.db')
         cur = con.cursor()
         cur.execute(f'''UPDATE users SET avatar = "{avatar}" WHERE id = "{user.id}"''')
