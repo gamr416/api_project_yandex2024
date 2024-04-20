@@ -3,5 +3,14 @@
 {% block content %}
     <h1>{{form.title.data}}</h1>
     <h5>{{form.content.data}}</h5>
-
+    <p>Ответить:</p>
+    <input type="text" name="answer">
+<form action = "/success" method = "post" enctype="multipart/form-data">
+        <label for="file-upload" class="custom-file-upload">
+            <div class="animate2">
+                <img src={{current_user.avatar}} class="second" width="150" height="150">
+                <img src="static/img/add_image.png" class="first" width="150" height="150">
+            </div>
+        </label>
+    <input type="submit" value="Ответить">
 {% endblock %}
