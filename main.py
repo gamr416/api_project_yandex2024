@@ -29,6 +29,13 @@ def load_user(user_id):
     db_sess = db_session.create_session()
     return db_sess.query(User).get(user_id)
 
+@app.route('/show_questions', methods=['GET', 'POST'])
+def show():
+    db_sess = db_session.create_session()
+    user = db_sess.query(User).all()
+    if len(user) == 0:
+        print(234567654)
+    return render_template('all_questions.html', users=user)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -228,7 +235,7 @@ def index():
 
 def main():
     db_session.global_init("db/blogs.db")
-    app.run()
+    app.run(port=8080, host='127.0.0.1')
 
 
 if __name__ == '__main__':
