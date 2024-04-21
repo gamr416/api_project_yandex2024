@@ -29,6 +29,13 @@ def load_user(user_id):
     db_sess = db_session.create_session()
     return db_sess.query(User).get(user_id)
 
+@app.route('/show_questions', methods=['GET', 'POST'])
+def show():
+    """db_sess = db_session.create_session()
+    user = db_sess.query(User).all()"""
+    db_sess2 = db_session.create_session()
+    news = db_sess2.query(News).order_by(News.created_date).all()
+    return render_template('all_questions.html', news=news)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -47,6 +54,9 @@ def login():
 @app.route('/question/<int:id>', methods=['GET', 'POST'])
 def open_question(id):
     form = NewsForm()
+    if request.method == 'POST':
+        # check if the post request has the file part
+        answer = request.files['answer']
     if request.method == "GET":
         db_sess = db_session.create_session()
         news = db_sess.query(News).filter(News.id == id
@@ -69,7 +79,7 @@ def open_question(id):
             return redirect('/')
         else:
             abort(404)
-    return render_template('question.html',title=f'Мыло {form.title.data}', form=form)
+    return render_template('question.html', title=f'Мыло {form.title.data}', form=form)
 
 
 @app.route('/logout')
@@ -136,7 +146,7 @@ def reqister():
         user.set_password(form.password.data)
         db_sess.add(user)
         db_sess.commit()
-        avatar = "static/img/no_image.png"
+        avatar = "static/img/no_image_1.png"
         con = sqlite3.connect('db/blogs.db')
         cur = con.cursor()
         cur.execute(f'''UPDATE users SET avatar = "{avatar}" WHERE id = "{user.id}"''')
@@ -217,7 +227,7 @@ def index():
     db_sess = db_session.create_session()
     if current_user.is_authenticated:
         news = db_sess.query(News).filter(
-            (News.user == current_user) | (News.is_private != True))
+            (News.user != current_user) & (News.is_private != True))
     else:
         news = db_sess.query(News).filter(News.is_private != True)
     return render_template("index.html", news=news)
@@ -225,7 +235,7 @@ def index():
 
 def main():
     db_session.global_init("db/blogs.db")
-    app.run()
+    app.run(port=8080, host='127.0.0.1')
 
 
 if __name__ == '__main__':

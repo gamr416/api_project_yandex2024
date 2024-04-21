@@ -1,6 +1,22 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>{{form.title.data}}</h1>
-    <h5>{{form.content.data}}</h5>
+<form action = "/success" method = "post" enctype="multipart/form-data" style="background-color: #f8f9fa; margin: 20px; border-radius: 10px; padding-bottom: 10px">
+    <div style="margin: 10px">
+        <h1>{{form.title.data}}</h1>
+        <h5>{{form.content.data}}</h5>
+        <p>Ответить:</p>
+        <label>
+            <div class="animate2">
+                {% if current_user.is_authenticated %}
+                <img src=/{{current_user.avatar}} width="50" height="50">
+                {% else %}
+                <img src="/static/img/no_image.png" width="50" height="50">
+                {% endif %}
+            </div>
+        </label>
+        <input type="text" name="answer">
+        <input type="submit" value="Ответить">
+    </div>
+</form>
 {% endblock %}
