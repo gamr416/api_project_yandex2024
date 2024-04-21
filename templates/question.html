@@ -6,13 +6,17 @@
         <h1>{{form.title.data}}</h1>
         <h5>{{form.content.data}}</h5>
         <p>Ответить:</p>
-        <label for="file-upload" class="custom-file-upload">
+        <label>
             <div class="animate2">
-                <img src={{current_user.avatar}} class="second" width="150" height="150">
-                <img src="static/img/add_image.png" class="first" width="150" height="150">
+                {% if current_user.is_authenticated %}
+                <img src=/{{current_user.avatar}} width="50" height="50">
+                {% else %}
+                <img src="/static/img/no_image.png" width="50" height="50">
+                {% endif %}
             </div>
         </label>
         <input type="text" name="answer">
         <input type="submit" value="Ответить">
     </div>
+</form>
 {% endblock %}

@@ -73,7 +73,7 @@ file-upload {
 
   height: 150px;  /* Высота */
 
-  border: 1px solid black;
+  border: none;
   border-radius: 100%;
   display: flex;
   align-items: center;
