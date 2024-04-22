@@ -32,16 +32,15 @@ def load_user(user_id):
 
 @app.route('/add_comment', methods=['GET', 'POST'])
 def add_comment():
-    #comment = request.form['comment']
     return render_template('comment.html')
 
 @app.route('/show_questions', methods=['GET', 'POST'])
 def show():
-    """db_sess = db_session.create_session()
-    user = db_sess.query(User).all()"""
+    db_sess = db_session.create_session()
+    users = db_sess.query(User).all()
     db_sess2 = db_session.create_session()
     news = db_sess2.query(News).order_by(News.created_date).all()
-    return render_template('all_questions.html', news=news)
+    return render_template('all_questions.html', news=news, users=users)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
