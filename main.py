@@ -131,7 +131,7 @@ def success():
         cur.execute(f'''UPDATE users SET avatar = "{avatar}" WHERE id = "{current_user.id}"''')
         con.commit()
         cur.close()
-        return render_template('user_info.html')
+        return redirect('/user')
 
 
 @app.route('/success_answer/<int:id>', methods=['POST'])

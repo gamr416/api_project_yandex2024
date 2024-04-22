@@ -10,11 +10,11 @@
     <title>{{title}}</title>
 </head>
 
-<body style="background-color: #99b1c2;">
+<body style="background-color: #F0F1F3;">
     <header>
-        <nav class="navbar navbar-light"  style="background-color: #e3f2fd;">
+        <nav class="navbar navbar-light"  style="background-color: #005FF9;">
             <p>
-            <a class="navbar-brand unselectable" href="/" ><img src="/static/img/logo.png"></a>
+            <a class="navbar-brand unselectable" href="/" ><img src="/static/img/logo.png" width="211" height="80"></a>
             {% if current_user.is_authenticated %}
             <a class="btn btn-primary" href="/ask">Спросить</a>
                 <a class="btn btn-primary " href="/show_questions" style="margin-left: 20px">Все вопросы</a>
@@ -34,8 +34,6 @@
             {% endif %}
         </nav>
     </header>
-    <div class="wrapper" style=" z-index: -1">
-    </div>
     <!-- Begin page content -->
     <main role="main" class="container">
         {% block content %}{% endblock %}
