@@ -138,6 +138,14 @@ def success():
 def success_answer(id):
     if request.method == 'POST':
         answer = request.data
+        # con = sqlite3.connect('db/blogs.db')
+        # cur = con.cursor()
+        # answer_id = id
+        # cur.execute(
+        #     f'''INSERT INTO answers VALUES (user_id, question_id, text) VALUES ({current_user.id}, {answer_id}, {answer})''')
+        # con.commit()
+        # cur.close()
+
     return redirect(f'/question/{id}')
 
 
