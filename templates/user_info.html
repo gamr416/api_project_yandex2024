@@ -1,19 +1,24 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <form action = "/success" method = "post" enctype="multipart/form-data">
-        <label for="file-upload" class="custom-file-upload">
-            <div class="animate2">
-                <img src={{current_user.avatar}} class="second" width="150" height="150">
-                <img src="static/img/add_image.png" class="first" width="150" height="150">
+    <form action = "/success" method = "post" enctype="multipart/form-data" class="main_window">
+        <div class="row">
+            <div class="col-md-2">
+                <label for="file-upload" class="custom-file-upload" style="margin: 10px">
+                    <div class="animate2">
+                        <img src={{current_user.avatar}} class="second" width="150" height="150">
+                        <img src="static/img/add_image.png" class="first" width="150" height="150">
+                    </div>
+                </label>
+                <input type="file" accept="image/png, image/gif, image/jpeg" id="file-upload" onchange="this.form.submit()" name="file" value=Upload style="visibility:hidden">
             </div>
-        </label>
-        <input type="file" accept="image/png, image/gif, image/jpeg" id="file-upload" onchange="this.form.submit()" name="file" value=Upload style="visibility:hidden;">
-        <submit> </submit>
-    </form>
-    <h1>{{ current_user.name }}</h1>
-    <h5>{{ current_user.about }}</h5>
+            <div class="col">
+                <h1 style="margin: 10px">{{ current_user.name }}</h1>
+                <h5 style="margin: 10px">{{ current_user.about }}</h5>
 
-    <a class="navbar-brand" href="/logout">Выйти</a>
+                <a class="navbar-brand" href="/logout" style="margin: 10px"><button type="button" class="btn btn-danger">Выйти</button></a>
+            </div>
+        </div>
+    </form>
 
 {% endblock %}

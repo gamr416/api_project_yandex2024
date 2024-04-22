@@ -1,18 +1,19 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Записи в блоге</h1>
+    <form class="main_window">
+    <h1 style="margin: 10px">Вопросы пользователей</h1>
     {% for item in news%}
-        <div class="col-md6 border rounded">
-            <h2><a href="/question/{{ item.id }}">{{item.title}}</a></h2>
-            <div>
+        <div class="col-md6 border rounded" style="margin: 10px;">
+            <h2 style="margin: 10px;"><a href="/question/{{ item.id }}">{{item.title}}</a></h2>
+            <div style="margin: 10px">
                 {{item.content}}
             </div>
-            <div>
-                Автор - {{item.user.name}}, Дата написания - {{item.created_date}}
+            <div style="margin: 10px">
+                Автор - {{item.user.name}}
             </div>
             {% if current_user.is_authenticated and current_user == item.user %}
-                <div>
+                <div style="margin: 10px">
                     <a href="/ask/{{ item.id }}" class="btn btn-warning">
                         Изменить
                     </a>
@@ -24,4 +25,5 @@
         </div>
 
     {% endfor %}
+    </form>
 {% endblock %}

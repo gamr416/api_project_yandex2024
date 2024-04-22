@@ -30,6 +30,19 @@ def load_user(user_id):
     return db_sess.query(User).get(user_id)
 
 
+@app.route('/add_comment', methods=['GET', 'POST'])
+def add_comment():
+    #comment = request.form['comment']
+    return render_template('comment.html')
+
+@app.route('/show_questions', methods=['GET', 'POST'])
+def show():
+    """db_sess = db_session.create_session()
+    user = db_sess.query(User).all()"""
+    db_sess2 = db_session.create_session()
+    news = db_sess2.query(News).order_by(News.created_date).all()
+    return render_template('all_questions.html', news=news)
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -44,6 +57,7 @@ def login():
                                form=form)
     return render_template('login.html', title='Авторизация', form=form)
 
+
 @app.route('/question/<int:id>', methods=['GET', 'POST'])
 def open_question(id):
     if request.method == "GET":
@@ -55,6 +69,7 @@ def open_question(id):
             form.title.data = news.title
             form.content.data = news.content
             form.is_private.data = news.is_private
+            form.news_id = news.id
         else:
             abort(404)
     if form.validate_on_submit():
@@ -65,6 +80,7 @@ def open_question(id):
             news.title = form.title.data
             news.content = form.content.data
             news.is_private = form.is_private.data
+            news.id = form.news_id
             db_sess.commit()
             return redirect('/')
         else:
@@ -118,16 +134,23 @@ def open_user():
 @app.route('/success', methods=['POST'])
 def success():
     if request.method == 'POST':
-        f = request.files['file']
-        f.filename = f"avatar_{current_user.id}.png"
-        avatar = f'static/img/uploaded_files/{f.filename}'
-        f.save(avatar)
+        file = request.files['file']
+        file.filename = f"avatar_{current_user.id}.png"
+        avatar = f'static/img/uploaded_files/{file.filename}'
+        file.save(avatar)
         con = sqlite3.connect('db/blogs.db')
         cur = con.cursor()
         cur.execute(f'''UPDATE users SET avatar = "{avatar}" WHERE id = "{current_user.id}"''')
         con.commit()
         cur.close()
-        return render_template('user_info.html')
+        return redirect('/user')
+
+
+@app.route('/success_answer/<int:id>', methods=['POST'])
+def success_answer(id):
+    if request.method == 'POST':
+        answer = request.data
+    return redirect(f'/question/{id}')
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -232,7 +255,7 @@ def index():
     db_sess = db_session.create_session()
     if current_user.is_authenticated:
         news = db_sess.query(News).filter(
-            (News.user == current_user) | (News.is_private != True))
+            (News.user != current_user) & (News.is_private != True))
     else:
         news = db_sess.query(News).filter(News.is_private != True)
     return render_template("index.html", news=news)
@@ -240,7 +263,7 @@ def index():
 
 def main():
     db_session.global_init("db/blogs.db")
-    app.run()
+    app.run(port=8080, host='127.0.0.1')
 
 
 if __name__ == '__main__':
