@@ -29,6 +29,12 @@ def load_user(user_id):
     db_sess = db_session.create_session()
     return db_sess.query(User).get(user_id)
 
+
+@app.route('/add_comment', methods=['GET', 'POST'])
+def add_comment():
+    #comment = request.form['comment']
+    return render_template('comment.html')
+
 @app.route('/show_questions', methods=['GET', 'POST'])
 def show():
     """db_sess = db_session.create_session()
