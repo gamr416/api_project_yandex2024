@@ -12,7 +12,7 @@
                         {% for user in users %}
                             {% if (user.id == new.user_id) %}
                                 <br><h3>Автор: {{ user.name }}</h3>
-                        {% endif %}
+                            {% endif %}
                         {% endfor %}
                         <p><b>Дата: {{new.created_date.date() }}</b></p>
                         <p>{{ new.content}}</p>
