@@ -6,6 +6,8 @@ from forms.news import NewsForm
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from werkzeug.utils import secure_filename
 import sqlite3
+from sqlalchemy import desc
+
 import os
 from data.users import User
 from data.news import News
@@ -87,7 +89,7 @@ def open_question(id):
             return redirect('/')
         else:
             abort(404)
-    return render_template('question.html', title=f'Мыло {form.title.data}', form=form)
+    return render_template('question.html', title=f'Мыло: {form.title.data}', form=form)
 
 
 @app.route('/logout')
@@ -115,7 +117,25 @@ def open_user():
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             return redirect(url_for('download_file', name=filename))
-    return render_template('user_info.html')
+    return render_template('user_info.html', title=f'Мыло: {current_user.name}')
+
+
+@app.route("/user/<int:id>")
+def open_another_user(id):
+    print(id)
+    if request.method == "GET":
+        db_sess = db_session.create_session()
+        user = db_sess.query(User).filter(User.id == id
+                                          ).first()
+        if user:
+            nickname = user.name
+            avatar = user.avatar
+            about = user.about
+        else:
+            abort(404)
+    return render_template('another_user_info.html', title=f'{nickname}',
+                           avatar=avatar, nickname=nickname, about=about)
+
 
 
 @app.route('/success', methods=['POST'])
@@ -142,6 +162,7 @@ def success_answer(id):
         answer_id = id
         cur.execute(
             f'''INSERT INTO answers (user_id, question_id, text) VALUES ({current_user.id}, {answer_id}, "{str(answer)[32:-4]}")''')
+        cur.execute('''INSERT INTO news(answer_id) VALUES(?)''', (2, ))
         con.commit()
         cur.close()
     return redirect(f'/question/{id}')
@@ -191,7 +212,7 @@ def add_news():
         db_sess.merge(current_user)
         db_sess.commit()
         return redirect('/')
-    return render_template('news.html', title='Добавление новости', 
+    return render_template('news.html', title='Ваш вопрос',
                            form=form)
 
 
@@ -224,7 +245,7 @@ def edit_news(id):
         else:
             abort(404)
     return render_template('news.html',
-                           title='Редактирование новости',
+                           title='Изменение вопроса',
                            form=form
                            )
 
@@ -249,10 +270,10 @@ def index():
     db_sess = db_session.create_session()
     if current_user.is_authenticated:
         news = db_sess.query(News).filter(
-            (News.user != current_user) & (News.is_private != True))
+            (News.user != current_user) & (News.is_private != True)).order_by(desc(News.created_date))
     else:
-        news = db_sess.query(News).filter(News.is_private != True)
-    return render_template("index.html", news=news)
+        news = db_sess.query(News).filter(News.is_private != True).order_by(desc(News.created_date))
+    return render_template("index.html", news=news, title=f'Мыло')
 
 
 def main():

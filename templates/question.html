@@ -16,7 +16,12 @@
             </div>
         </label>
         <input type="text" name="answer">
+        {% if current_user.is_authenticated %}
         <input type="submit" value="Ответить">
+        {% else %}
+        <input type="submit" value="Ответить" disabled>
+        {% endif %}
+
     </div>
 </form>
 {% endblock %}
