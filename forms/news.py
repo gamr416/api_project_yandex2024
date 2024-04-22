@@ -9,3 +9,4 @@ class NewsForm(FlaskForm):
     content = TextAreaField("Содержание")
     is_private = BooleanField("Личное")
     submit = SubmitField('Применить')
+    news_id = 0

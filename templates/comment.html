@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form class="main_window" method="POST" action="/add_comment">
+    <div class="col-md6 border rounded" style="background-color: #f8f9fa;">
+        <textarea name="comment" placeholder="Введите ваш ответ"></textarea>
+        <br>
+        <a class="btn btn-warning" href="/show_questions">Добавить ответ</a>
+    </div>
+</form>
+
+{% endblock %}

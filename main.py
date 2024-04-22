@@ -29,6 +29,12 @@ def load_user(user_id):
     db_sess = db_session.create_session()
     return db_sess.query(User).get(user_id)
 
+
+@app.route('/add_comment', methods=['GET', 'POST'])
+def add_comment():
+    #comment = request.form['comment']
+    return render_template('comment.html')
+
 @app.route('/show_questions', methods=['GET', 'POST'])
 def show():
     """db_sess = db_session.create_session()
@@ -51,6 +57,7 @@ def login():
                                form=form)
     return render_template('login.html', title='Авторизация', form=form)
 
+
 @app.route('/question/<int:id>', methods=['GET', 'POST'])
 def open_question(id):
     form = NewsForm()
@@ -65,6 +72,7 @@ def open_question(id):
             form.title.data = news.title
             form.content.data = news.content
             form.is_private.data = news.is_private
+            form.news_id = news.id
         else:
             abort(404)
     if form.validate_on_submit():
@@ -75,6 +83,7 @@ def open_question(id):
             news.title = form.title.data
             news.content = form.content.data
             news.is_private = form.is_private.data
+            news.id = form.news_id
             db_sess.commit()
             return redirect('/')
         else:
@@ -113,16 +122,23 @@ def open_user():
 @app.route('/success', methods=['POST'])
 def success():
     if request.method == 'POST':
-        f = request.files['file']
-        f.filename = f"avatar_{current_user.id}.png"
-        avatar = f'static/img/uploaded_files/{f.filename}'
-        f.save(avatar)
+        file = request.files['file']
+        file.filename = f"avatar_{current_user.id}.png"
+        avatar = f'static/img/uploaded_files/{file.filename}'
+        file.save(avatar)
         con = sqlite3.connect('db/blogs.db')
         cur = con.cursor()
         cur.execute(f'''UPDATE users SET avatar = "{avatar}" WHERE id = "{current_user.id}"''')
         con.commit()
         cur.close()
-        return render_template('user_info.html')
+        return redirect('/user')
+
+
+@app.route('/success_answer/<int:id>', methods=['POST'])
+def success_answer(id):
+    if request.method == 'POST':
+        answer = request.data
+    return redirect(f'/question/{id}')
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -146,7 +162,7 @@ def reqister():
         user.set_password(form.password.data)
         db_sess.add(user)
         db_sess.commit()
-        avatar = "static/img/no_image_1.png"
+        avatar = "static/img/no_image.png"
         con = sqlite3.connect('db/blogs.db')
         cur = con.cursor()
         cur.execute(f'''UPDATE users SET avatar = "{avatar}" WHERE id = "{user.id}"''')
