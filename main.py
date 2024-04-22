@@ -137,20 +137,19 @@ def success():
 @app.route('/success_answer/<int:id>', methods=['POST'])
 def success_answer(id):
     if request.method == 'POST':
-        answer = request.data
-        # con = sqlite3.connect('db/blogs.db')
-        # cur = con.cursor()
-        # answer_id = id
-        # cur.execute(
-        #     f'''INSERT INTO answers VALUES (user_id, question_id, text) VALUES ({current_user.id}, {answer_id}, {answer})''')
-        # con.commit()
-        # cur.close()
-
+        answer = request.form
+        con = sqlite3.connect('db/blogs.db')
+        cur = con.cursor()
+        answer_id = id
+        cur.execute(
+            f'''INSERT INTO answers (user_id, question_id, text) VALUES ({current_user.id}, {answer_id}, "{str(answer)[32:-4]}")''')
+        con.commit()
+        cur.close()
     return redirect(f'/question/{id}')
 
 
 @app.route('/register', methods=['GET', 'POST'])
-def reqister():
+def register():
     form = RegisterForm()
     if form.validate_on_submit():
         if form.password.data != form.password_again.data:
