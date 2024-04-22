@@ -46,11 +46,8 @@ def login():
 
 @app.route('/question/<int:id>', methods=['GET', 'POST'])
 def open_question(id):
-    form = NewsForm()
-    if request.method == 'POST':
-        # check if the post request has the file part
-        answer = request.files['answer']
     if request.method == "GET":
+        form = NewsForm()
         db_sess = db_session.create_session()
         news = db_sess.query(News).filter(News.id == id
                                           ).first()
@@ -73,6 +70,21 @@ def open_question(id):
         else:
             abort(404)
     return render_template('question.html', title=f'Мыло {form.title.data}', form=form)
+
+
+@app.route('/success1/<int:id>', methods=['POST'])
+def success1(id):
+    if request.method == 'POST':
+        text = request.data
+        print(text)
+        con = sqlite3.connect('db/blogs.db')
+        cur = con.cursor()
+        answer_id = '<int:id>'
+        print(answer_id)
+        cur.execute(f'''INSERT INTO answers VALUES (user_id, question_id, text) VALUES ({current_user.id}, {answer_id}, {text})''')
+        con.commit()
+        cur.close()
+    return (f'/question{id}')
 
 
 @app.route('/logout')
