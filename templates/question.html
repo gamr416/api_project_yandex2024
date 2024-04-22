@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<form action = "/success" method = "post" enctype="multipart/form-data" style="background-color: #f8f9fa; margin: 20px; border-radius: 10px; padding-bottom: 10px">
+<form action = "/success_answer/{{ form.news_id }}" method = "post" enctype="multipart/form-data" style="background-color: #f8f9fa; margin: 20px; border-radius: 10px; padding-bottom: 10px">
     <div style="margin: 10px">
         <h1>{{form.title.data}}</h1>
         <h5>{{form.content.data}}</h5>

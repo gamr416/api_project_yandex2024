@@ -24,6 +24,9 @@
             <a class="navbar-brand" href="/user">{{ current_user.name }}</a>
             </p>
             {% else %}
+             <a class="btn btn-primary" href="/login">Спросить</a>
+                <a class="btn btn-primary " href="/show_questions" style="margin-left: 20px">Все вопросы</a>
+            </p>
             <p>
                 <a class="btn btn-primary " href="/register">Зарегистрироваться</a>
                 <a class="btn btn-success" href="/login">Войти</a>
@@ -31,22 +34,7 @@
             {% endif %}
         </nav>
     </header>
-    <div class="wrapper" style="position: fixed; z-index: -1">
-      <div><span class="dot"></span></div>
-      <div><span class="dot"></span></div>
-      <div><span class="dot"></span></div>
-      <div><span class="dot"></span></div>
-      <div><span class="dot"></span></div>
-      <div><span class="dot"></span></div>
-      <div><span class="dot"></span></div>
-      <div><span class="dot"></span></div>
-      <div><span class="dot"></span></div>
-      <div><span class="dot"></span></div>
-      <div><span class="dot"></span></div>
-      <div><span class="dot"></span></div>
-      <div><span class="dot"></span></div>
-      <div><span class="dot"></span></div>
-      <div><span class="dot"></span></div>
+    <div class="wrapper" style=" z-index: -1">
     </div>
     <!-- Begin page content -->
     <main role="main" class="container">
