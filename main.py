@@ -36,6 +36,7 @@ def load_user(user_id):
 def add_comment():
     return render_template('comment.html')
 
+
 @app.route('/show_questions', methods=['GET', 'POST'])
 def show():
     db_sess = db_session.create_session()
