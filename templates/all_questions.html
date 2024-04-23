@@ -8,10 +8,10 @@
                 {% for new in news %}
                 <div class="col-md6 border rounded" style="background-color: #f8f9fa;">
                     <div style="margin: 10px;">
-                        <h2>{{new.title}}</h2>
+                        <h2 name='new.id'>{{new.title}}</h2>
                         {% for user in users %}
                             {% if (user.id == new.user_id) %}
-                                <br><h3>Автор: {{ user.name }}</h3>
+                                <br><h3 name="user.id">Автор: {{ user.name }}</h3>
                             {% endif %}
                         {% endfor %}
                         <p><b>Дата: {{new.created_date.date() }}</b></p>

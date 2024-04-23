@@ -11,6 +11,7 @@ from sqlalchemy import desc
 import os
 from data.users import User
 from data.news import News
+#from data.answers import Answers
 
 
 app = Flask(__name__)
@@ -34,6 +35,12 @@ def load_user(user_id):
 
 @app.route('/add_comment', methods=['GET', 'POST'])
 def add_comment():
+    '''answer = request.form['answer']
+    new_data = Answers(content=answer)
+    db_sess = db_session.create_session()
+    db_sess.add(new_data)
+    db_sess.commit()'''
+
     return render_template('comment.html')
 
 
@@ -42,9 +49,13 @@ def show():
     db_sess = db_session.create_session()
     users = db_sess.query(User).all()
     db_sess2 = db_session.create_session()
+
     news = db_sess2.query(News).order_by(News.created_date.desc()).all()
-    db_sess3 = db_session.create_session()
-    answers = db_sess.query(Answer).all()
+    """user_id = request.form['user_id']
+    print(2)
+    news_id = request.form['news_id']
+    print(user_id)
+    print(news_id)"""
     return render_template('all_questions.html', news=news, users=users)
 
 @app.route('/login', methods=['GET', 'POST'])
