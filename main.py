@@ -43,6 +43,8 @@ def show():
     users = db_sess.query(User).all()
     db_sess2 = db_session.create_session()
     news = db_sess2.query(News).order_by(News.created_date.desc()).all()
+    db_sess3 = db_session.create_session()
+    answers = db_sess.query(Answer).all()
     return render_template('all_questions.html', news=news, users=users)
 
 @app.route('/login', methods=['GET', 'POST'])
