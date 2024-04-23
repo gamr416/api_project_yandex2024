@@ -19,6 +19,12 @@
                 <a class="navbar-brand" href="/logout" style="margin: 10px"><button type="button" class="btn btn-danger">Выйти</button></a>
             </div>
         </div>
+        <h2>Ваши вопросы</h2>
+        {% for item in questions%}
+        <div style="margin: 10px">
+            <a href="/question/{{item.id}}">{{item.content}}</a>
+        </div>
+        {% endfor %}
     </form>
 
 {% endblock %}

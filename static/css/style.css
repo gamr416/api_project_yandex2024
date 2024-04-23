@@ -256,7 +256,12 @@ div .dot {
 
 
 .main_window {background-color: #FFFFFF;
-margin: 20px;
+margin-top: 20px;
 border-radius: 1px;
+border-style: solid;
+border-color: #DDDDDD;
 padding-bottom: 10px
+
 }
+
+

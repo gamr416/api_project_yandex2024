@@ -11,7 +11,7 @@ from sqlalchemy import desc
 import os
 from data.users import User
 from data.news import News
-#from data.answers import Answers
+from data.answers import Answers
 
 
 app = Flask(__name__)
@@ -83,6 +83,8 @@ def open_question(id):
         db_sess = db_session.create_session()
         news = db_sess.query(News).filter(News.id == id
                                           ).first()
+        all_answers = db_sess.query(Answers).filter(Answers.question_id == id)
+
         if news:
             form.title.data = news.title
             form.content.data = news.content
@@ -103,7 +105,8 @@ def open_question(id):
             return redirect('/')
         else:
             abort(404)
-    return render_template('question.html', title=f'Мыло: {form.title.data}', form=form)
+    return render_template('question.html', title=f'Мыло: {form.title.data}',
+                           form=form, answers=all_answers)
 
 
 @app.route('/logout')
@@ -116,6 +119,9 @@ def logout():
 @app.route('/user')
 @login_required
 def open_user():
+    if request.method == 'GET':
+        db_sess = db_session.create_session()
+        users_questions = db_sess.query(News).filter(News.user_id == current_user.id)
     if request.method == 'POST':
         # check if the post request has the file part
         if 'file' not in request.files:
@@ -131,12 +137,12 @@ def open_user():
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             return redirect(url_for('download_file', name=filename))
-    return render_template('user_info.html', title=f'Мыло: {current_user.name}')
+    return render_template('user_info.html',
+                           title=f'Мыло: {current_user.name}', questions=users_questions)
 
 
 @app.route("/user/<int:id>")
 def open_another_user(id):
-    print(id)
     if request.method == "GET":
         db_sess = db_session.create_session()
         user = db_sess.query(User).filter(User.id == id
@@ -176,7 +182,6 @@ def success_answer(id):
         answer_id = id
         cur.execute(
             f'''INSERT INTO answers (user_id, question_id, text) VALUES ({current_user.id}, {answer_id}, "{str(answer)[32:-4]}")''')
-        cur.execute('''INSERT INTO news(answer_id) VALUES(?)''', (2, ))
         con.commit()
         cur.close()
     return redirect(f'/question/{id}')
