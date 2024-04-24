@@ -2,4 +2,4 @@ Flask==3.0.3
 Flask-Login==0.6.3
 Flask-WTF==1.2.1
 Werkzeug==3.0.2
-SQLalchemy==2.0.29
+SQLAlchemy==2.0.29

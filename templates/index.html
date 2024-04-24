@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <form style="background-color: #f8f9fa; border-radius: 20px; padding-bottom: 10px">
-    <h1 style="margin: 10px">Записи в блоге</h1>
+    <form class="main_window">
+    <h1 style="margin: 10px">Вопросы пользователей</h1>
     {% for item in news%}
         <div class="col-md6 border rounded" style="margin: 10px;">
             <h2 style="margin: 10px;"><a href="/question/{{ item.id }}">{{item.title}}</a></h2>
@@ -10,7 +10,7 @@
                 {{item.content}}
             </div>
             <div style="margin: 10px">
-                Автор - {{item.user.name}}, Дата написания - {{item.created_date}}
+                Автор - <a href="/user/{{item.user.id}}">{{item.user.name}}</a>
             </div>
             {% if current_user.is_authenticated and current_user == item.user %}
                 <div style="margin: 10px">
