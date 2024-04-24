@@ -23,7 +23,7 @@
             </div>
             {% endfor %}
             <h6 style="margin-top: 30px">Ответить:</h6>
-            <p style="margin-right: 10px"><input class="form-control" name="answer" required type="text" value></p>
+            <input type="text" name="answer">
             <div style="margin-top: 20px">
                 {% if current_user.is_authenticated %}
                 <button type="button" class="btn btn-success">Ответить</button>
