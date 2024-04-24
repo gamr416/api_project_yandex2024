@@ -21,7 +21,7 @@
             </p>
             <p>
             <a class="navbar-brand" href="/user"><img src=/{{current_user.avatar}} width="50" height="50" style="border-radius: 100%;"></a>
-            <a class="navbar-brand" href="/user">{{ current_user.name }}</a>
+            <a class="navbar-brand" href="/user" style="color: white">{{ current_user.name }}</a>
             </p>
             {% else %}
              <a class="btn btn-primary" href="/login">Спросить</a>
@@ -34,6 +34,7 @@
             {% endif %}
         </nav>
     </header>
+
     <!-- Begin page content -->
     <main role="main" class="container">
         {% block content %}{% endblock %}

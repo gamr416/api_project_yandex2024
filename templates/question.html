@@ -2,30 +2,36 @@
 
 {% block content %}
 <form action = "/success_answer/{{ form.news_id }}" method = "post" enctype="multipart/form-data" class="main_window">
-    <div style="margin: 10px">
-        <h1>{{form.title.data}}</h1>
-        <h5>{{form.content.data}}</h5>
-        {% for item in answers%}
-        <div style="margin: 10px">
-                {{item.text}}
+    <div class="row">
+        <div class="col-md-1">
+            <label style="margin: 10px">
+                <div class="animate2">
+                    {% if current_user.is_authenticated %}
+                    <img src=/{{current_user.avatar}} width="70" height="70" style="border-radius: 100%;">
+                    {% else %}
+                    <img src="/static/img/no_image.png" width="70" height="70" style="border-radius: 100%;">
+                    {% endif %}
+                </div>
+            </label>
         </div>
-        {% endfor %}
-        <p>Ответить:</p>
-        <label style="wigth: 50; height:50;">
-            <div class="animate2" style="wigth: 50; height:50; ">
+        <div class="col">
+            <h1>{{form.title.data}}</h1>
+            <h5>{{form.content.data}}</h5>
+            {% for item in answers%}
+            <div style="margin: 10px">
+                    {{item.text}}
+            </div>
+            {% endfor %}
+            <h6 style="margin-top: 30px">Ответить:</h6>
+            <p style="margin-right: 10px"><input class="form-control" name="answer" required type="text" value></p>
+            <div style="margin-top: 20px">
                 {% if current_user.is_authenticated %}
-                <img src=/{{current_user.avatar}} width="50" height="50" style="border-radius: 100%;">
+                <button type="button" class="btn btn-success">Ответить</button>
                 {% else %}
-                <img src="/static/img/no_image.png" width="50" height="50" style="border-radius: 100%;">
+                <button type="button" class="btn btn-secondary" disabled>Ответить</button>
                 {% endif %}
             </div>
-        </label>
-        <input type="text" name="answer">
-        {% if current_user.is_authenticated %}
-        <input type="submit" value="Ответить">
-        {% else %}
-        <input type="submit" value="Ответить" disabled>
-        {% endif %}
+        </div>
 
     </div>
 </form>
