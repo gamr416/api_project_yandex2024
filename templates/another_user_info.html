@@ -16,6 +16,12 @@
 
                 </div>
         </div>
+        <h2 style="margin: 10px">Вопросы пользователя</h2>
+        {% for item in questions%}
+        <div class="col-md6 border rounded" style="margin: 10px;">
+            <h2 style="margin: 10px;"><a href="/question/{{item.id}}">{{item.title}}</a></h2>
+        </div>
+        {% endfor %}
     </form>
 
 {% endblock %}

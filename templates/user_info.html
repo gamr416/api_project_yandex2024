@@ -19,10 +19,10 @@
                 <a class="navbar-brand" href="/logout" style="margin: 10px"><button type="button" class="btn btn-danger">Выйти</button></a>
             </div>
         </div>
-        <h2>Ваши вопросы</h2>
+        <h2 style="margin: 10px">Ваши вопросы</h2>
         {% for item in questions%}
-        <div style="margin: 10px">
-            <a href="/question/{{item.id}}">{{item.content}}</a>
+        <div class="col-md6 border rounded" style="margin: 10px;">
+            <a href="/question/{{item.id}}" >{{item.title}}</a>
         </div>
         {% endfor %}
     </form>

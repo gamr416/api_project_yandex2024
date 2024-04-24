@@ -147,6 +147,7 @@ def open_another_user(id):
         db_sess = db_session.create_session()
         user = db_sess.query(User).filter(User.id == id
                                           ).first()
+        users_questions = db_sess.query(News).filter(News.user_id == id)
         if user:
             nickname = user.name
             avatar = user.avatar
@@ -154,7 +155,7 @@ def open_another_user(id):
         else:
             abort(404)
     return render_template('another_user_info.html', title=f'{nickname}',
-                           avatar=avatar, nickname=nickname, about=about)
+                           avatar=avatar, nickname=nickname, about=about, questions=users_questions)
 
 
 
