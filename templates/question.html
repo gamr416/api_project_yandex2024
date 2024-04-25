@@ -22,14 +22,20 @@
                     {{item.text}}
             </div>
             {% endfor %}
-            <h6 style="margin-top: 30px">Ответить:</h6>
-            <input type="text" name="answer">
-            <div style="margin-top: 20px">
+            <div>
                 {% if current_user.is_authenticated %}
-                <button type="button" class="btn btn-success">Ответить</button>
+                <img src=/{{current_user.avatar}} width="50" height="50" style="border-radius: 100%;">
                 {% else %}
-                <button type="button" class="btn btn-secondary" disabled>Ответить</button>
+                <img src="/static/img/no_image.png" width="70" height="70" style="border-radius: 100%;">
                 {% endif %}
+                <p><textarea rows="5" cols="100" name="text", placeholder="Введите текст ответа"></textarea></p>
+                <div style="margin-top: 20px">
+                {% if current_user.is_authenticated %}
+                <input type="submit" class="btn btn-success" value="Ответить">
+                {% else %}
+                <input type="submit" value="Ответить" disabled>
+                {% endif %}
+                </div>
             </div>
         </div>
 
