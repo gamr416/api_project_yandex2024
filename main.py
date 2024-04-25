@@ -7,7 +7,7 @@ from flask_login import LoginManager, login_user, login_required, logout_user, c
 from werkzeug.utils import secure_filename
 import sqlite3
 from sqlalchemy import desc
-
+from flask_restful import Api
 import os
 from data.users import User
 from data.news import News
@@ -19,6 +19,7 @@ app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 UPLOAD_FOLDER = '/uploaded_images'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+api = Api(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 
@@ -77,21 +78,26 @@ def login():
 def open_question(id):
     form = NewsForm()
     if request.method == 'POST':
-        # check if the post request has the file part
-        answer = request.files['answer']
-    if request.method == "GET":
-        db_sess = db_session.create_session()
-        news = db_sess.query(News).filter(News.id == id
-                                          ).first()
-        all_answers = db_sess.query(Answers).filter(Answers.question_id == id)
+        answer = request.form
+        con = sqlite3.connect('db/blogs.db')
+        cur = con.cursor()
+        answer_id = id
+        cur.execute(
+            f'''INSERT INTO answers (user_id, question_id, text) VALUES ({current_user.id}, {answer_id}, "{str(answer)[30:-4].replace("""\r\n""", )}")''')
+        con.commit()
+        cur.close()
+    db_sess = db_session.create_session()
+    news = db_sess.query(News).filter(News.id == id
+                                      ).first()
+    all_answers = db_sess.query(Answers).filter(Answers.question_id == id)
 
-        if news:
-            form.title.data = news.title
-            form.content.data = news.content
-            form.is_private.data = news.is_private
-            form.news_id = news.id
-        else:
-            abort(404)
+    if news:
+        form.title.data = news.title
+        form.content.data = news.content
+        form.is_private.data = news.is_private
+        form.news_id = news.id
+    else:
+        abort(404)
     if form.validate_on_submit():
         db_sess = db_session.create_session()
         news = db_sess.query(News).filter(News.id == id
@@ -136,7 +142,16 @@ def open_user():
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return redirect(url_for('download_file', name=filename))
+            file = request.files['file']
+            file.filename = f"avatar_{current_user.id}.png"
+            avatar = f'static/img/uploaded_files/{file.filename}'
+            file.save(avatar)
+            con = sqlite3.connect('db/blogs.db')
+            cur = con.cursor()
+            cur.execute(f'''UPDATE users SET avatar = "{avatar}" WHERE id = "{current_user.id}"''')
+            con.commit()
+            cur.close()
+        return redirect(url_for('download_file', name=filename))
     return render_template('user_info.html',
                            title=f'Мыло: {current_user.name}', questions=users_questions)
 
@@ -156,36 +171,6 @@ def open_another_user(id):
             abort(404)
     return render_template('another_user_info.html', title=f'{nickname}',
                            avatar=avatar, nickname=nickname, about=about, questions=users_questions)
-
-
-
-@app.route('/success', methods=['POST'])
-def success():
-    if request.method == 'POST':
-        file = request.files['file']
-        file.filename = f"avatar_{current_user.id}.png"
-        avatar = f'static/img/uploaded_files/{file.filename}'
-        file.save(avatar)
-        con = sqlite3.connect('db/blogs.db')
-        cur = con.cursor()
-        cur.execute(f'''UPDATE users SET avatar = "{avatar}" WHERE id = "{current_user.id}"''')
-        con.commit()
-        cur.close()
-        return redirect('/user')
-
-
-@app.route('/success_answer/<int:id>', methods=['POST'])
-def success_answer(id):
-    if request.method == 'POST':
-        answer = request.form
-        con = sqlite3.connect('db/blogs.db')
-        cur = con.cursor()
-        answer_id = id
-        cur.execute(
-            f'''INSERT INTO answers (user_id, question_id, text) VALUES ({current_user.id}, {answer_id}, "{str(answer)[32:-4]}")''')
-        con.commit()
-        cur.close()
-    return redirect(f'/question/{id}')
 
 
 @app.route('/register', methods=['GET', 'POST'])

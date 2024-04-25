@@ -3,3 +3,4 @@ Flask-Login==0.6.3
 Flask-WTF==1.2.1
 Werkzeug==3.0.2
 SQLAlchemy==2.0.29
+Flask-RESTful==0.3.10
