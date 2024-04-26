@@ -3,18 +3,13 @@
 {% block content %}
 <form action = "/question/{{form.news_id}}" method = "post" enctype="multipart/form-data" class="main_window">
     <div class="row">
-        <div class="col-md-1" style="margin: 10px">
+        <div style="margin: 20px">
             <label>
-                <div>
-                    {% if current_user.is_authenticated %}
-                    <img src=/{{current_user.avatar}} width="70" height="70" style="border-radius: 100%;">
-                    {% else %}
-                    <img src="/static/img/no_image.png" width="70" height="70" style="border-radius: 100%;">
-                    {% endif %}
-                </div>
+                    <img src=/{{avatar}} width="70" height="70" style="border-radius: 100%;">
+                    {{name}}
             </label>
-            <h1>{{form.title.data}}</h1>
-            <h5>{{form.content.data}}</h5>
+            <div style="white-space: pre-line; display: block-inline;">{{form.title.data}}</div>
+            <div style="white-space: pre-line; display: block-inline;">{{form.content.data}}</div>
         </div>
     </div>
     <div class="row">

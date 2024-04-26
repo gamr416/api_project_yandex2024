@@ -79,6 +79,14 @@ def login():
 @app.route('/question/<int:id>', methods=['GET', 'POST'])
 def open_question(id):
     form = NewsForm()
+    con = sqlite3.connect('db/blogs.db')
+    cur = con.cursor()
+    name = cur.execute(
+        f'''SELECT name FROM users WHERE id =(SELECT user_id FROM news WHERE id ='{id}')''').fetchall()[0][0]
+    avatar = cur.execute(
+        f'''SELECT avatar FROM users WHERE id =(SELECT user_id FROM news WHERE id ='{id}')''').fetchall()[0][0]
+    con.commit()
+    cur.close()
     if request.method == 'POST':
         answer = request.form
         answer = dict(answer)['text'].strip()
@@ -116,7 +124,7 @@ def open_question(id):
         else:
             abort(404)
     return render_template('question.html', title=f'Мыло: {form.title.data}',
-                           form=form, answers=all_answers)
+                           form=form, answers=all_answers, name=name, avatar=avatar)
 
 
 @app.route('/logout')
