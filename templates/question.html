@@ -20,18 +20,16 @@
     <div class="row">
         <div class="col">
             {% for item in answers%}
-            <div style="margin: 10px; white-space: pre-line; word-wrap: break-word; border-radius: 1px; border-style: solid; border-color: #DDDDDD;">
-                <div style="display: inline-block;">
-                    <div style="float: left; display: inline-block;">
-                        <img src=/{{item.user.avatar}} width="50" height="50">
+            <div style="margin: 10px; white-space: nowrap; word-wrap: break-word; border-radius: 1px; border-style: solid; border-color: #DDDDDD;">
+                <div style="display: inline-block; white-space: nowrap; margin: 10px;">
+                    <div style="float: left; display: inline-block; white-space: nowrap;">
+                        <img src=/{{item.user.avatar}} width="50" height="50" style="border-radius: 100%;">
                     </div>
-                    <div style="float: left; display: inline-block;">
+                    <div style="float: left; display: inline-block; white-space: nowrap; margin: 10px;">
                         {{item.user.name}}
                     </div>
                 </div>
-                <div>
-                {{item.text}}
-                </div>
+                <div style="white-space: pre-line; margin: 10px; display: block-inline;">{{item.text}}</div>
             </div>
             {% endfor %}
             <div style="margin: 10px;">
