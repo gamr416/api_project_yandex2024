@@ -258,7 +258,7 @@ div .dot {
 
 .main_window {background-color: #FFFFFF;
 margin-top: 20px;
-border-radius: 20px;
+border-radius: 1px;
 border-style: solid;
 border-color: #DDDDDD;
 padding-bottom: 10px

@@ -29,6 +29,7 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+
 @login_manager.user_loader
 def load_user(user_id):
     db_sess = db_session.create_session()
@@ -224,38 +225,38 @@ def add_news():
                            form=form)
 
 
-@app.route('/ask/<int:id>', methods=['GET', 'POST'])
-@login_required
-def edit_news(id):
-    form = NewsForm()
-    if request.method == "GET":
-        db_sess = db_session.create_session()
-        news = db_sess.query(News).filter(News.id == id,
-                                          News.user == current_user
-                                          ).first()
-        if news:
-            form.title.data = news.title
-            form.content.data = news.content
-            form.is_private.data = news.is_private
-        else:
-            abort(404)
-    if form.validate_on_submit():
-        db_sess = db_session.create_session()
-        news = db_sess.query(News).filter(News.id == id,
-                                          News.user == current_user
-                                          ).first()
-        if news:
-            news.title = form.title.data
-            news.content = form.content.data
-            news.is_private = form.is_private.data
-            db_sess.commit()
-            return redirect('/')
-        else:
-            abort(404)
-    return render_template('news.html',
-                           title='Изменение вопроса',
-                           form=form
-                           )
+# @app.route('/ask/<int:id>', methods=['GET', 'POST'])
+# @login_required
+# def edit_news(id):
+#     form = NewsForm()
+#     if request.method == "GET":
+#         db_sess = db_session.create_session()
+#         news = db_sess.query(News).filter(News.id == id,
+#                                           News.user == current_user
+#                                           ).first()
+#         if news:
+#             form.title.data = news.title
+#             form.content.data = news.content
+#             form.is_private.data = news.is_private
+#         else:
+#             abort(404)
+#     if form.validate_on_submit():
+#         db_sess = db_session.create_session()
+#         news = db_sess.query(News).filter(News.id == id,
+#                                           News.user == current_user
+#                                           ).first()
+#         if news:
+#             news.title = form.title.data
+#             news.content = form.content.data
+#             news.is_private = form.is_private.data
+#             db_sess.commit()
+#             return redirect('/')
+#         else:
+#             abort(404)
+#     return render_template('news.html',
+#                            title='Изменение вопроса',
+#                            form=form
+#                            )
 
 
 @app.route('/news_delete/<int:id>', methods=['GET', 'POST'])

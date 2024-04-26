@@ -3,9 +3,9 @@
 {% block content %}
 <form action = "/question/{{form.news_id}}" method = "post" enctype="multipart/form-data" class="main_window">
     <div class="row">
-        <div class="col-md-1">
-            <label style="margin: 10px">
-                <div class="animate2">
+        <div class="col-md-1" style="margin: 10px">
+            <label>
+                <div>
                     {% if current_user.is_authenticated %}
                     <img src=/{{current_user.avatar}} width="70" height="70" style="border-radius: 100%;">
                     {% else %}
@@ -13,14 +13,25 @@
                     {% endif %}
                 </div>
             </label>
-        </div>
-        <div class="col">
             <h1>{{form.title.data}}</h1>
             <h5>{{form.content.data}}</h5>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
             {% for item in answers%}
-            <div style="margin: 10px; white-space: pre-line; word-wrap: break-word;">
-                <img src=/{{item.user.avatar}} width="50" height="50">
+            <div style="margin: 10px; white-space: pre-line; word-wrap: break-word; border-radius: 1px; border-style: solid; border-color: #DDDDDD;">
+                <div style="display: inline-block;">
+                    <div style="float: left; display: inline-block;">
+                        <img src=/{{item.user.avatar}} width="50" height="50">
+                    </div>
+                    <div style="float: left; display: inline-block;">
+                        {{item.user.name}}
+                    </div>
+                </div>
+                <div>
                 {{item.text}}
+                </div>
             </div>
             {% endfor %}
             <div style="margin: 10px;">
