@@ -5,6 +5,7 @@ from forms.user import RegisterForm, LoginForm
 from forms.news import NewsForm
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from werkzeug.utils import secure_filename
+from werkzeug.datastructures import ImmutableMultiDict
 import sqlite3
 from sqlalchemy import desc
 from flask_restful import Api
@@ -79,13 +80,15 @@ def open_question(id):
     form = NewsForm()
     if request.method == 'POST':
         answer = request.form
-        con = sqlite3.connect('db/blogs.db')
-        cur = con.cursor()
-        answer_id = id
-        cur.execute(
-            f'''INSERT INTO answers (user_id, question_id, text) VALUES ({current_user.id}, {answer_id}, "{str(answer)[30:-4].replace("""\r\n""", )}")''')
-        con.commit()
-        cur.close()
+        answer = dict(answer)['text'].strip()
+        if answer.strip() != '':
+            con = sqlite3.connect('db/blogs.db')
+            cur = con.cursor()
+            answer_id = id
+            cur.execute(
+                f'''INSERT INTO answers (user_id, question_id, text) VALUES ({current_user.id}, {answer_id}, "{answer}")''')
+            con.commit()
+            cur.close()
     db_sess = db_session.create_session()
     news = db_sess.query(News).filter(News.id == id
                                       ).first()
