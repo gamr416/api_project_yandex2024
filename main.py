@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import render_template, redirect, request, abort, flash, url_for
+from flask import render_template, redirect, request, abort, flash, url_for, jsonify
 from data import db_session
 from forms.user import RegisterForm, LoginForm
 from forms.news import NewsForm
