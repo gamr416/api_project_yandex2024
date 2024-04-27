@@ -1,15 +1,12 @@
 from flask import Flask
-from flask import render_template, redirect, request, abort, flash, url_for, jsonify
+from flask import render_template, redirect, request, abort
 from data import db_session
 from forms.user import RegisterForm, LoginForm
 from forms.news import NewsForm
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
-from werkzeug.utils import secure_filename
-from werkzeug.datastructures import ImmutableMultiDict
 import sqlite3
 from sqlalchemy import desc
 from flask_restful import Api
-import os
 from data.users import User
 from data.news import News
 from data.answers import Answers
