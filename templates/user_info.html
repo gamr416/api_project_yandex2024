@@ -23,6 +23,7 @@
         {% for item in questions%}
         <div class="col-md6 border rounded" style="margin: 10px;">
             <a href="/question/{{item.id}}" >{{item.title}}</a>
+            <a href="news_delete/{{item.id}}">Удалить</a>
         </div>
         {% endfor %}
     </form>

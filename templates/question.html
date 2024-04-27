@@ -5,8 +5,8 @@
     <div class="row">
         <div style="margin: 20px">
             <label>
-                    <img src=/{{avatar}} width="70" height="70" style="border-radius: 100%;">
-                    {{name}}
+                <a href="/user/{{user_id}}"><img src=/{{avatar}} width="70" height="70" style="border-radius: 100%;"></a>
+                    <a href="/user/{{user_id}}">{{name}}</a>
             </label>
             <div style="white-space: pre-line; display: block-inline;">{{form.title.data}}</div>
             <div style="white-space: pre-line; display: block-inline;">{{form.content.data}}</div>
@@ -18,7 +18,7 @@
             <div style="margin: 10px; white-space: nowrap; word-wrap: break-word; border-radius: 1px; border-style: solid; border-color: #DDDDDD;">
                 <div style="display: inline-block; white-space: nowrap; margin: 10px;">
                     <div style="float: left; display: inline-block; white-space: nowrap;">
-                        <img src=/{{item.user.avatar}} width="50" height="50" style="border-radius: 100%;">
+                        <a href="/user/{{item.user.id}}"><img src=/{{item.user.avatar}} width="50" height="50" style="border-radius: 100%;"></a>
                     </div>
                     <div style="float: left; display: inline-block; white-space: nowrap; margin: 10px;">
                         {{item.user.name}}
@@ -38,7 +38,7 @@
                 {% if current_user.is_authenticated %}
                 <input type="submit" class="btn btn-success" value="Ответить">
                 {% else %}
-                <input type="submit" value="Ответить" disabled>
+                <input type="submit" class="btn btn-success" value="Ответить" disabled>
                 {% endif %}
                 </div>
             </div>
