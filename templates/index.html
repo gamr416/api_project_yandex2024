@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <form class="main_window">
+    <form class="main_window" style="margin: 10px">
     <h1 style="margin: 10px">Вопросы пользователей</h1>
     {% for item in news%}
         <div class="col-md6 border rounded" style="margin: 10px;">
@@ -10,7 +10,7 @@
                 {{item.content}}
             </div>
             <div style="margin: 10px">
-                Автор - {{item.user.name}}
+                Автор - <a href="/user/{{item.user.id}}">{{item.user.name}}</a>
             </div>
             {% if current_user.is_authenticated and current_user == item.user %}
                 <div style="margin: 10px">

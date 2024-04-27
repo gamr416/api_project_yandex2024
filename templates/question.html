@@ -1,22 +1,49 @@
 {% extends "base.html" %}
 
 {% block content %}
-<form action = "/success_answer/{{ form.news_id }}" method = "post" enctype="multipart/form-data" class="main_window">
-    <div style="margin: 10px">
-        <h1>{{form.title.data}}</h1>
-        <h5>{{form.content.data}}</h5>
-        <p>Ответить:</p>
-        <label>
-            <div class="animate2">
-                {% if current_user.is_authenticated %}
-                <img src=/{{current_user.avatar}} width="50" height="50">
-                {% else %}
-                <img src="/static/img/no_image.png" width="50" height="50">
-                {% endif %}
+<form action = "/question/{{form.news_id}}" method = "post" enctype="multipart/form-data" class="main_window">
+    <div class="row">
+        <div style="margin: 20px">
+            <label>
+                <a href="/user/{{user_id}}"><img src=/{{avatar}} width="70" height="70" style="border-radius: 100%;"></a>
+                    <a href="/user/{{user_id}}">{{name}}</a>
+            </label>
+            <div style="white-space: pre-line; display: block-inline;">{{form.title.data}}</div>
+            <div style="white-space: pre-line; display: block-inline;">{{form.content.data}}</div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            {% for item in answers%}
+            <div style="margin: 10px; white-space: nowrap; word-wrap: break-word; border-radius: 1px; border-style: solid; border-color: #DDDDDD;">
+                <div style="display: inline-block; white-space: nowrap; margin: 10px;">
+                    <div style="float: left; display: inline-block; white-space: nowrap;">
+                        <a href="/user/{{item.user.id}}"><img src=/{{item.user.avatar}} width="50" height="50" style="border-radius: 100%;"></a>
+                    </div>
+                    <div style="float: left; display: inline-block; white-space: nowrap; margin: 10px;">
+                        {{item.user.name}}
+                    </div>
+                </div>
+                <div style="white-space: pre-line; margin: 10px; display: block-inline;">{{item.text}}</div>
             </div>
-        </label>
-        <input type="text" name="answer">
-        <input type="submit" value="Ответить">
+            {% endfor %}
+            <div style="margin: 10px;">
+                {% if current_user.is_authenticated %}
+                <img src=/{{current_user.avatar}} width="50" height="50" style="border-radius: 100%;">
+                {% else %}
+                <img src="/static/img/no_image.png" width="70" height="70" style="border-radius: 100%;">
+                {% endif %}
+                <p><textarea rows="5" cols="100" name="text" style="margin-top: 10px; white-space: pre-wrap;" placeholder="Введите текст ответа"></textarea></p>
+                <div style="margin-top: 20px">
+                {% if current_user.is_authenticated %}
+                <input type="submit" class="btn btn-success" value="Ответить">
+                {% else %}
+                <input type="submit" class="btn btn-success" value="Ответить" disabled>
+                {% endif %}
+                </div>
+            </div>
+        </div>
+
     </div>
 </form>
 {% endblock %}

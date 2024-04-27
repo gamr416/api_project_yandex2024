@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+    <link rel="icon" href="/static/img/favicon.ico">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" type="text/css" href="/static/css/style.css" />
@@ -10,18 +11,17 @@
     <title>{{title}}</title>
 </head>
 
-<body style="background-color: #F0F1F3;">
-    <header>
-        <nav class="navbar navbar-light"  style="background-color: #005FF9;">
+<body style="background-color: #F0F1F3; ">
+    <header >
+        <nav class="navbar navbar-light unselectable"  style="background-color: #005FF9; height: 100px;">
             <p>
             <a class="navbar-brand unselectable" href="/" ><img src="/static/img/logo.png" width="211" height="80"></a>
             {% if current_user.is_authenticated %}
             <a class="btn btn-primary" href="/ask">Спросить</a>
-                <a class="btn btn-primary " href="/show_questions" style="margin-left: 20px">Все вопросы</a>
             </p>
             <p>
             <a class="navbar-brand" href="/user"><img src=/{{current_user.avatar}} width="50" height="50" style="border-radius: 100%;"></a>
-            <a class="navbar-brand" href="/user">{{ current_user.name }}</a>
+            <a class="navbar-brand" href="/user" style="color: white">{{ current_user.name }}</a>
             </p>
             {% else %}
              <a class="btn btn-primary" href="/login">Спросить</a>
@@ -29,11 +29,12 @@
             </p>
             <p>
                 <a class="btn btn-primary " href="/register">Зарегистрироваться</a>
-                <a class="btn btn-success" href="/login">Войти</a>
+                <a class="btn btn-primary" href="/login">Войти</a>
             </p>
             {% endif %}
         </nav>
     </header>
+
     <!-- Begin page content -->
     <main role="main" class="container">
         {% block content %}{% endblock %}
