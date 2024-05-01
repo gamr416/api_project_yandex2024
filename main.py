@@ -7,6 +7,7 @@ from flask_login import LoginManager, login_user, login_required, logout_user, c
 import sqlite3
 from sqlalchemy import desc
 from flask_restful import Api
+
 from data.users import User
 from data.news import News
 from data.answers import Answers
